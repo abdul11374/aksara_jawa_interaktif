@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aksara Jawa Interaktif</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container fade-in">
+    <h1>📝 Aksara Jawa Interaktif</h1>
+    <p class="description">Pilih mode untuk belajar atau bermain kuis aksara Jawa!</p>
+
+    <div class="menu-buttons">
+      <button class="menu-btn" onclick="transisiHalaman('belajar.html')">📘 Belajar Aksara Jawa</button>
+      <button class="menu-btn" onclick="transisiHalaman('kuis.html')">🎮 Main Kuis Tebak Gambar</button>
+    </div>
+  </div>
+
+  <footer>© 2025 Belajar Aksara Jawa | Game Edukasi Interaktif</footer>
+
+  <script>
+    function transisiHalaman(link) {
+      document.body.classList.add("fade-out");
+      setTimeout(() => { location.href = link; }, 500);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Aksara Jawa</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #f8b500, #fceabb);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #333;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      background: white;
+      border-radius: 25px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      padding: 40px 30px;
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+      animation: slideIn 0.8s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #d35400;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .game-area {
+      position: relative;
+      background: linear-gradient(145deg, #fff8e7, #fef3c7);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    #hero-image {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 15px;
+      border: 3px solid #f39c12;
+      background-color: white;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      background: #f39c12;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .option-btn:hover {
+      background: #e67e22;
+      transform: translateY(-2px);
+    }
+
+    .option-btn.correct {
+      background: #27ae60 !important;
+      box-shadow: 0 0 10px rgba(39, 174, 96, 0.6);
+    }
+
+    .option-btn.wrong {
+      background: #e74c3c !important;
+      box-shadow: 0 0 10px rgba(231, 76, 60, 0.6);
+    }
+
+    .timer {
+      color: #e67e22;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .score {
+      margin-top: 20px;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.3s;
+    }
+
+    .popup.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      animation: pop 0.5s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .popup-content h2 {
+      color: #d35400;
+    }
+
+    .popup-content button {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .popup-content button:hover {
+      background: #2ecc71;
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 0.9rem;
+      color: #555;
+      opacity: 0.8;
+    }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎮 Tebak Gambar Aksara Jawa</h1>
+    <p class="description">Tebak nama huruf aksara Jawa dari gambar berikut!</p>
+
+    <div class="game-area">
+      <img id="hero-image" src="img/ha.jpg" alt="Gambar Aksara Jawa">
+    </div>
+
+    <div class="timer">⏳ Waktu: <span id="time-left">10</span> detik</div>
+
+    <div class="buttons">
+      <button class="option-btn" id="option1">Ha</button>
+      <button class="option-btn" id="option2">Na</button>
+      <button class="option-btn" id="option3">Ka</button>
+    </div>
+
+    <div class="score">Skor: <span id="score">0</span> / 15</div>
+  </div>
+
+  <!-- Popup skor akhir -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2>🎉 Kuis Selesai!</h2>
+      <p>Skor Akhir: <span id="final-score">0</span> / 15</p>
+      <button onclick="location.reload()">🔁 Main Lagi</button>
+      <button onclick="location.href='index.html'">🏠 Kembali ke Menu</button>
+    </div>
+  </div>
+
+  <footer>© 2025 Belajar Aksara Jawa | Game Edukasi Interaktif</footer>
+
+  <audio id="benar" src="sounds/benar.mp3"></audio>
+  <audio id="salah" src="sounds/salah.mp3"></audio>
+  <audio id="timeup" src="sounds/timeup.mp3"></audio>
+
+  <script>
+    const questions = [
+      { img: "ha.jpg", correct: "Ha", options: ["Ha", "Na", "Ka"] },
+      { img: "na.jpg", correct: "Na", options: ["Ca", "Na", "Ta"] },
+      { img: "ca.jpg", correct: "Ca", options: ["Ka", "Ca", "Ra"] },
+      { img: "ra.jpg", correct: "Ra", options: ["Sa", "Ra", "Na"] },
+      { img: "ka.jpg", correct: "Ka", options: ["Ka", "Da", "Ja"] },
+      { img: "da.jpg", correct: "Da", options: ["Ba", "Da", "Ga"] },
+      { img: "ta.jpg", correct: "Ta", options: ["Ta", "Na", "Sa"] },
+      { img: "sa.jpg", correct: "Sa", options: ["Ha", "Pa", "Sa"] },
+      { img: "wa.jpg", correct: "Wa", options: ["Wa", "Ka", "Ra"] },
+      { img: "la.jpg", correct: "La", options: ["La", "Ca", "Na"] },
+      { img: "pa.jpg", correct: "Pa", options: ["Pa", "Ta", "Ga"] },
+      { img: "dha.jpg", correct: "Dha", options: ["Dha", "Na", "Sa"] },
+      { img: "ja.jpg", correct: "Ja", options: ["Ja", "Ka", "Na"] },
+      { img: "ya.jpg", correct: "Ya", options: ["Ca", "Ja", "Ya"] },
+      { img: "nga.jpg", correct: "Nga", options: ["Ma", "Nga", "Na"] },
+    ];
+
+    let current = 0;
+    let score = 0;
+    let timeLeft = 10;
+    let timer;
+    const timeDisplay = document.getElementById("time-left");
+    const image = document.getElementById("hero-image");
+    const scoreDisplay = document.getElementById("score");
+    const popup = document.getElementById("popup");
+    const finalScore = document.getElementById("final-score");
+    const benarAudio = document.getElementById("benar");
+    const salahAudio = document.getElementById("salah");
+    const timeupAudio = document.getElementById("timeup");
+    const buttons = document.querySelectorAll(".option-btn");
+
+    function loadQuestion() {
+      if (current >= questions.length) return endQuiz();
+
+      const q = questions[current];
+      image.src = "img/" + q.img;
+      buttons.forEach((btn, i) => {
+        btn.textContent = q.options[i];
+        btn.classList.remove("correct", "wrong");
+        btn.disabled = false;
+      });
+
+      resetTimer();
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timeLeft = 10;
+      timeDisplay.textContent = timeLeft;
+      timer = setInterval(() => {
+        timeLeft--;
+        timeDisplay.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          timeupAudio.play();
+          nextQuestion();
+        }
+      }, 1000);
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        setTimeout(loadQuestion, 1000);
+      } else {
+        endQuiz();
+      }
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        clearInterval(timer);
+        const correct = questions[current].correct;
+        if (btn.textContent === correct) {
+          btn.classList.add("correct");
+          score++;
+          benarAudio.play();
+        } else {
+          btn.classList.add("wrong");
+          salahAudio.play();
+        }
+        scoreDisplay.textContent = score;
+        buttons.forEach(b => b.disabled = true);
+        nextQuestion();
+      });
+    });
+
+    function endQuiz() {
+      clearInterval(timer);
+      popup.classList.add("show");
+      finalScore.textContent = score;
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
